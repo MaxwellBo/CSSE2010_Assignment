@@ -160,8 +160,12 @@ int8_t move_block_left(FallingBlock* blockPtr) {
 }
 
 int8_t move_block_right(FallingBlock* blockPtr) {
-	/* YOUR CODE HERE */
+	// TODO: Comments
+	if(blockPtr->column - blockPtr->width < -1) {
+		return 0;
+	}
 	
+	blockPtr->column -= 1;
 	/*
 	 * You may wish to model it on move_block_left above
 	 * Your function must return 0 if it's unable to move (e.g.
@@ -171,5 +175,5 @@ int8_t move_block_right(FallingBlock* blockPtr) {
 	/*
 	 * Initially, this function does nothing so we return 0
 	 */
-	return 0;
+	return 1;
 }

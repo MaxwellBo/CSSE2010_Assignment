@@ -79,7 +79,7 @@ void splash_screen(void) {
 	
 	move_cursor(3,5);
 	set_display_attribute(FG_GREEN);	// Make the text green
-	printf_P(PSTR("CSSE2010/7201 Tetris Project by <your name(s) here>"));	
+	printf_P(PSTR("CSSE2010/7201 Tetris Project by Max Bo"));	
 	set_display_attribute(FG_WHITE);	// Return to default colour (White)
 	
 	// Output the scrolling message to the LED matrix
