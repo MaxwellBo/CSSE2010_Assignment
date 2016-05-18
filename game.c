@@ -14,6 +14,8 @@
 #include "blocks.h"
 #include "score.h"
 #include "ledmatrix.h"
+#include "terminalio.h" // TODO: REMOVE
+#include <avr/pgmspace.h>
 
 /*
  * Function prototypes.
@@ -242,8 +244,21 @@ uint8_t fix_block_to_board_and_add_new_block(void) {
  * to a column on the LED matrix.)
  */
 static void check_for_completed_rows(void) {
-	/* YOUR CODE HERE */
-	
+		for(uint8_t row=0; row < BOARD_ROWS; row++) {
+			if(board[row] == ((1 << BOARD_WIDTH) - 1)) {
+				// TODO: Might be a off by one error here. Check.
+				for(uint8_t i=0; i < row; i++) {
+					board[i + 1] = board[i];
+					
+					for(uint8_t j=0; j < MATRIX_NUM_ROWS; j++) {
+						board_display[i + 1][j] = board_display[i][j];
+					}
+				}
+				board[0] = 0;
+				update_rows_on_display(0, BOARD_ROWS);
+				set_matrix_row_to_colour(3, 0x15);
+			}
+		}
 	/* Suggested approach is to iterate over all the rows (0 to
 	 * BOARD_ROWS -1) in the board and check if the row is all ones
 	 * i.e. matches ((1 << BOARD_WIDTH) - 1).
@@ -272,7 +287,6 @@ static void check_for_completed_rows(void) {
 	 * row 1 (second top row) is set to 0 (black)
 	 * row 0 (top row) is set to 0 (black)
 	 */
-	
 }
 
 /*
