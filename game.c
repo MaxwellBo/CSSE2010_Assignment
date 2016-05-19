@@ -16,6 +16,7 @@
 #include "ledmatrix.h"
 #include "terminalio.h" // TODO: REMOVE
 #include <avr/pgmspace.h>
+#include <stdio.h>
 
 /*
  * Function prototypes.
@@ -251,10 +252,14 @@ static void check_for_completed_rows(void) {
 					board[i] = board[i - 1];
 					
 					for(uint8_t j=0; j < MATRIX_NUM_ROWS; j++) {
-						board_display[i + 1][j] = board_display[i][j];
+						board_display[i][j] = board_display[i - 1][j];
 					}
 				}
+				printf_P(PSTR("CSSE2010/7201 Tetris Project by Max Bo"));	
 				board[0] = 0;
+				for(uint8_t i=0; i < MATRIX_NUM_ROWS; i++) {
+					board_display[0][i] = 0;
+				}
 				update_rows_on_display(0, BOARD_ROWS);
 			}
 		}
