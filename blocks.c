@@ -161,7 +161,7 @@ int8_t move_block_left(FallingBlock* blockPtr) {
 
 int8_t move_block_right(FallingBlock* blockPtr) {
 	// TODO: Comments
-	if(blockPtr->column - blockPtr->width < -1) {
+	if(blockPtr->column < 1) {
 		return 0;
 	}
 	

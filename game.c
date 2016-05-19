@@ -256,7 +256,6 @@ static void check_for_completed_rows(void) {
 				}
 				board[0] = 0;
 				update_rows_on_display(0, BOARD_ROWS);
-				set_matrix_row_to_colour(3, 0x15);
 			}
 		}
 	/* Suggested approach is to iterate over all the rows (0 to
