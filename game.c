@@ -247,8 +247,8 @@ static void check_for_completed_rows(void) {
 		for(uint8_t row=0; row < BOARD_ROWS; row++) {
 			if(board[row] == ((1 << BOARD_WIDTH) - 1)) {
 				// TODO: Might be a off by one error here. Check.
-				for(uint8_t i=0; i < row; i++) {
-					board[i + 1] = board[i];
+				for(uint8_t i=row; i >= 1; i--) {
+					board[i] = board[i - 1];
 					
 					for(uint8_t j=0; j < MATRIX_NUM_ROWS; j++) {
 						board_display[i + 1][j] = board_display[i][j];
