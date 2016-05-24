@@ -205,6 +205,15 @@ void play_game(void) {
 		} else if(serial_input == 'p' || serial_input == 'P') {
 			// Unimplemented feature - pause/unpause the game until 'p' or 'P' is
 			// pressed again. All other input (buttons, serial etc.) must be ignored.
+
+			// TODO: Uncomment this
+
+			// while(1) {
+			// 	if(serial_input == 'p' || serial_input == 'P') {
+			// 		break;
+			// 	}
+			// }
+
 		} 
 		// else - invalid input or we're part way through an escape sequence -
 		// do nothing
