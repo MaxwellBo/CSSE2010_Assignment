@@ -261,6 +261,7 @@ static void check_for_completed_rows(void) {
 			if(board[row] == ((1 << BOARD_WIDTH) - 1)) {
 				// Found filled row
 				rows_cleared++;
+				printf_P(PSTR("Score: %d"), rows_cleared);	
 				rows_cleared_successively++;
 				
 				if(rows_cleared_successively >= 4) {
