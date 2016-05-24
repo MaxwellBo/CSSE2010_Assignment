@@ -253,25 +253,15 @@ uint8_t fix_block_to_board_and_add_new_block(void) {
  */
 static void check_for_completed_rows(void) {
 
-		uint8_t rows_cleared = 0;
-		uint8_t rows_cleared_successively = 0; // Number of rows that have been popped in a row
-		uint8_t tetris_count = 0;
-		
 		for(uint8_t row=0; row < BOARD_ROWS; row++) {
 			if(board[row] == ((1 << BOARD_WIDTH) - 1)) {
+
 				// Found filled row
-				rows_cleared++; // TODO: Fix
-				rows_cleared_successively++;
-				
-				if(rows_cleared_successively >= 4) {
-					tetris_count++; 
-					
-					// Reset the counter
-					rows_cleared_successively = 0;
-					
-					// Remove those that "contributed" to the Tetris
-					rows_cleared -= 4;
-				}
+				add_to_score(100);
+
+				clear_terminal();
+				move_cursor(3, 3);
+				printf_P(PSTR("Score: %d"), get_score());			
 				
 				// Shift all rows down up until filled row
 				for(uint8_t i=row; i >= 1; i--) {
@@ -290,20 +280,8 @@ static void check_for_completed_rows(void) {
 				
 				update_rows_on_display(0, BOARD_ROWS);
 	
-			} else {
-				rows_cleared_successively = 0;
 			}
-			
-			// Cleanup
-			if(rows_cleared || tetris_count) {
-				add_to_score(rows_cleared * 100);
-				add_to_score(tetris_count * 800);
-				
-				clear_terminal();
-				move_cursor(3, 3);
-				printf_P(PSTR("Score: %d"), get_score());			
-			}
-		} // Loop close
+		}
 	/* Suggested approach is to iterate over all the rows (0 to
 	 * BOARD_ROWS -1) in the board and check if the row is all ones
 	 * i.e. matches ((1 << BOARD_WIDTH) - 1).
