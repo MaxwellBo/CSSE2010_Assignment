@@ -245,21 +245,37 @@ uint8_t fix_block_to_board_and_add_new_block(void) {
  * to a column on the LED matrix.)
  */
 static void check_for_completed_rows(void) {
+
+
+
+	 	// TODO: What integer type can I use here?
+		// u_int8 or int?
+		uint8_t tetris_count = 0;
+		uint8_t row_count = 0;
+
 		for(uint8_t row=0; row < BOARD_ROWS; row++) {
 			if(board[row] == ((1 << BOARD_WIDTH) - 1)) {
 				// TODO: Might be a off by one error here. Check.
 				for(uint8_t i=row; i >= 1; i--) {
+
 					board[i] = board[i - 1];
 					
 					for(uint8_t j=0; j < MATRIX_NUM_ROWS; j++) {
 						board_display[i][j] = board_display[i - 1][j];
 					}
 				}
+
+				// Note that terminal.io has been imported
+
+				// clear_terminal();
+				// 
 				printf_P(PSTR("CSSE2010/7201 Tetris Project by Max Bo"));	
 				board[0] = 0;
+
 				for(uint8_t i=0; i < MATRIX_NUM_ROWS; i++) {
 					board_display[0][i] = 0;
 				}
+
 				update_rows_on_display(0, BOARD_ROWS);
 			}
 		}
