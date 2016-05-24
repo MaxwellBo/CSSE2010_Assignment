@@ -89,7 +89,7 @@ void splash_screen(void) {
 	// Red message the first time through
 	PixelColour colour = COLOUR_RED;
 	while(1) {
-		set_scrolling_display_text("TETRIS", colour);
+		set_scrolling_display_text("43926871", colour);
 		// Scroll the message until it has scrolled off the 
 		// display or a button is pushed. We pause for 130ms between each scroll.
 		while(scroll_display()) {
