@@ -232,7 +232,6 @@ uint8_t fix_block_to_board_and_add_new_block(void) {
 	move_cursor(3, 3);
 	printf_P(PSTR("Score: %d"), get_score());
 	
-	
 	for(uint8_t row = 0; row < current_block.height; row++) {
 		uint8_t board_row = current_block.row + row;
 		board[board_row] |= 
