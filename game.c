@@ -263,7 +263,7 @@ static void check_for_completed_rows(void) {
 				rows_cleared++;
 				rows_cleared_successively++;
 				
-				if (rows_cleared_successively >= 4) {
+				if(rows_cleared_successively >= 4) {
 					tetris_count++; 
 					
 					// Reset the counter
@@ -295,7 +295,7 @@ static void check_for_completed_rows(void) {
 			}
 			
 			// Cleanup
-			if (rows_cleared || tetris_count) {
+			if(rows_cleared || tetris_count) {
 				add_to_score(rows_cleared * 100);
 				add_to_score(tetris_count * 800);
 				
@@ -303,7 +303,6 @@ static void check_for_completed_rows(void) {
 				move_cursor(3, 3);
 				printf_P(PSTR("Score: %d"), get_score());			
 			}
-
 		} // Loop close
 	/* Suggested approach is to iterate over all the rows (0 to
 	 * BOARD_ROWS -1) in the board and check if the row is all ones
