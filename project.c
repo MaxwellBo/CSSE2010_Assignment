@@ -131,6 +131,7 @@ void play_game(void) {
 	char serial_input, escape_sequence_char;
 	uint8_t characters_into_escape_sequence = 0;
 	uint8_t paused = 0;
+	uint32_t paused_time = 0;
 	
 	// Record the last time a block was dropped as the current time -
 	// this ensures we don't drop a block immediately.
@@ -206,9 +207,15 @@ void play_game(void) {
 		} else if(serial_input == 'p' || serial_input == 'P') {
 			// Unimplemented feature - pause/unpause the game until 'p' or 'P' is
 			// pressed again. All other input (buttons, serial etc.) must be ignored.
-
-			paused = !paused; // Flip the status
-
+			if(!paused) { // if running
+				paused = 1; // pause game
+				paused_time = get_clock_ticks(); // log the time it occured
+			}
+			else { // if paused
+				paused = 0; // unpause
+				last_drop_time += get_clock_ticks() - paused_time;
+				// Shift the last_drop_time forward for the duration it was paused
+			}
 		} 
 		// else - invalid input or we're part way through an escape sequence -
 		// do nothing
