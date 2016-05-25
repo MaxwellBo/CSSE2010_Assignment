@@ -274,8 +274,8 @@ static void check_for_completed_rows(void) {
 				
 				// Empty the top row
 				board[0] = 0;
-				for(uint8_t i=0; i < MATRIX_NUM_ROWS; i++) {
-					board_display[0][i] = 0;
+				for(uint8_t j=0; j < MATRIX_NUM_ROWS; j++) {
+					board_display[0][j] = 0;
 				}
 				
 				update_rows_on_display(0, BOARD_ROWS);
