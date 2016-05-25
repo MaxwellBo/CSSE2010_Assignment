@@ -204,12 +204,11 @@ void play_game(void) {
 				}
 			} 
 			last_drop_time = get_clock_ticks();
-		} else if (button==1) {
+		} else if (button==1 || serial_input == ' ') {
 			// Attempt to drop block from height
 			
 			// Attempt until failure
 			while(attempt_drop_block_one_row()) {}
-			
 			// Drop failed - fix block to board and add new block	
 			if(!fix_block_to_board_and_add_new_block()) {
 				break;	// GAME OVER
