@@ -3,7 +3,7 @@
  *
  * Main file for the Tetris Project.
  *
- * Author: Peter Sutton. Modified by <YOUR NAME HERE>
+ * Author: Peter Sutton. Modified by Max Bo
  */ 
 
 #include <avr/io.h>
