@@ -212,7 +212,7 @@ void play_game(void) {
 				paused_time = get_clock_ticks(); // log the time it occured
 			}
 			else { // if paused
-				paused = 0; // unpause
+				paused = 0; // unpause game
 				last_drop_time += get_clock_ticks() - paused_time;
 				// Shift the last_drop_time forward for the duration it was paused
 			}
