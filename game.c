@@ -53,6 +53,7 @@ rowtype    board[BOARD_ROWS];
 MatrixColumn board_display[BOARD_ROWS];
 FallingBlock current_block;	// Current dropping block - there will 
 							// always be one if the game is being played
+FallingBlock next_block;
 
 /* 
  * Initialise board - all the row data will be empty (0) and we
