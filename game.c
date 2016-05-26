@@ -74,6 +74,7 @@ void init_game(void) {
 	// succeed so we ignore the return value - this is indicated 
 	// by the (void) cast. This function will update the display
 	// for the required rows.
+	next_block = generate_random_block();
 	(void)add_random_block();
 }
 
@@ -318,7 +319,9 @@ static void check_for_completed_rows(void) {
  * means the game is over, otherwise we return 1.
  */
 static uint8_t add_random_block(void) {
-	current_block = generate_random_block();
+	
+	current_block = next_block;
+	next_block = generate_random_block();
 	// Check if the block will collide with the fixed blocks on the board
 	if(block_collides(current_block)) {
 		/* Block will collide. We don't add the block - just return 0 - 
