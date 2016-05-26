@@ -230,7 +230,7 @@ uint8_t fix_block_to_board_and_add_new_block(void) {
 	
 	add_to_score(1);
 	
-	clear_terminal();
+	// clear_terminal();
 	move_cursor(3, 3);
 	printf_P(PSTR("Score: %6d"), get_score());
 	
@@ -261,9 +261,9 @@ static void check_for_completed_rows(void) {
 				// Found filled row
 				add_to_score(100);
 
-				clear_terminal();
+				// clear_terminal();
 				move_cursor(3, 3);
-				printf_P(PSTR("Score: %6d"), get_score());			
+				printf_P(PSTR("Score: %6d"), get_score());
 				
 				// Shift all rows down up until filled row
 				for(uint8_t i=row; i >= 1; i--) {
@@ -340,6 +340,10 @@ static uint8_t add_random_block(void) {
 	
 	// The addition succeeded - return true
 	return 1;
+}
+
+static void print_block_preview(void) {
+	
 }
 
 /*
