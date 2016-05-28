@@ -267,8 +267,8 @@ static void check_for_completed_rows(void) {
 				printf_P(PSTR("Score: %6d"), get_score());
 				
 				// TODO: REMOVE
-				move_cursor(6, 3);
-				printf_P(PSTR(get_cleared_rows());
+				move_cursor(3, 6);
+				printf_P(PSTR("Cleared rows: %6d"), get_cleared_rows());
 				
 				// Shift all rows down up until filled row
 				for(uint8_t i=row; i >= 1; i--) {
@@ -349,8 +349,15 @@ static uint8_t add_random_block(void) {
 }
 
 void print_block_preview(void) {
+	
+	for(uint8_t offset=0; offset < 3; offset++) {
+		move_cursor(15, 15 + offset);
+		printf_P(PSTR("   "));
+	}
+		
 	for(uint8_t row=0; row < next_block.height; row++) {
 		move_cursor(15, 15 + row);
+		
 		switch(next_block.pattern[row]) {
 			case 0b001:
 				printf_P(PSTR("  \u2588\n"));
