@@ -238,7 +238,7 @@ void play_game(void) {
 		// do nothing
 		
 		// Check for timer related events here
-		if((get_clock_ticks() >= last_drop_time + (600 - (get_cleared_rows() * 20)) && !paused) {
+		if((get_clock_ticks() >= last_drop_time + (600 - (get_cleared_rows() * 30))) && !paused) {
 			// 600ms (0.6 second) has passed since the last time we dropped
 			// a block, so drop it now.
 			if(!attempt_drop_block_one_row()) {
