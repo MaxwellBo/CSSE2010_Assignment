@@ -76,7 +76,6 @@ void init_game(void) {
 	// for the required rows.
 	next_block = generate_random_block();
 	(void)add_random_block();
-	print_block_preview();
 }
 
 /* 

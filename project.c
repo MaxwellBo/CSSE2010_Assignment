@@ -133,6 +133,12 @@ void play_game(void) {
 	uint8_t paused = 0;
 	uint32_t paused_time = 0;
 	
+	
+	// I'm putting all the features that need to get kicked off immediately here
+	move_cursor(3, 3);
+	printf_P(PSTR("Score: %6d"), get_score());
+	print_block_preview();
+	
 	// Record the last time a block was dropped as the current time -
 	// this ensures we don't drop a block immediately.
 	last_drop_time = get_clock_ticks();
