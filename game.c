@@ -260,10 +260,15 @@ static void check_for_completed_rows(void) {
 
 				// Found filled row
 				add_to_score(100);
-
+				increment_cleared_rows();
+				
 				// clear_terminal();
 				move_cursor(3, 3);
 				printf_P(PSTR("Score: %6d"), get_score());
+				
+				// TODO: REMOVE
+				move_cursor(6, 3);
+				printf_P(PSTR(get_cleared_rows());
 				
 				// Shift all rows down up until filled row
 				for(uint8_t i=row; i >= 1; i--) {

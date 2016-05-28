@@ -119,6 +119,7 @@ void new_game(void) {
 	
 	// Initialise the score
 	init_score();
+	init_cleared_rows();
 	
 	// Delete any pending button pushes or serial input
 	empty_button_queue();
