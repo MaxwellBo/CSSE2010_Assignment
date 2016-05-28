@@ -75,8 +75,8 @@ void init_game(void) {
 	// by the (void) cast. This function will update the display
 	// for the required rows.
 	next_block = generate_random_block();
-	print_block_preview();
 	(void)add_random_block();
+	print_block_preview();
 }
 
 /* 
@@ -345,27 +345,23 @@ static uint8_t add_random_block(void) {
 }
 
 void print_block_preview(void) {
-
-	
 	for(uint8_t row=0; row < next_block.height; row++) {
 		move_cursor(15, 15 + row);
 		switch(next_block.pattern[row]) {
 			case 0b001:
-				printf_P(PSTR("  #\n"));
+				printf_P(PSTR("  \u2588\n"));
 				break;
 			case 0b010:
-				printf_P(PSTR(" # \n"));
+				printf_P(PSTR(" \u2588 \n"));
 				break;
 			case 0b011:
-				printf_P(PSTR(" ##\n"));
+				printf_P(PSTR(" \u2588\u2588\n"));
 				break;
 			case 0b111:
-				printf_P(PSTR("###\n"));
+				printf_P(PSTR("\u2588\u2588\u2588\n"));
 				break;	
 		}
-	}
-
-	
+	}	
 }
 
 /*
