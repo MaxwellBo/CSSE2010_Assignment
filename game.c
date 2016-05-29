@@ -375,6 +375,10 @@ void print_block_preview(void) {
 	}	
 }
 
+void print_game_view(void) {
+	
+}
+
 /*
  * Check whether the given block collides (intersects with) with
  * the fixed blocks on the board. Return 1 if it does collide, 0
