@@ -32,6 +32,7 @@ void new_game(void);
 void play_game(void);
 void handle_game_over(void);
 void handle_new_lap(void);
+void update_seven_segment(void);
 
 // ASCII code for Escape character
 #define ESCAPE_CHAR 27
@@ -149,6 +150,9 @@ void play_game(void) {
 	// and on a regular basis will drop the falling block down by one row.
 	while(1) {
 		
+		// And everything that needs to be called in the main loop
+		update_seven_segment();
+
 		// Check for input - which could be a button push or serial input.
 		// Serial input may be part of an escape sequence, e.g. ESC [ D
 		// is a left cursor key press. We will be processing each character
@@ -263,4 +267,18 @@ void handle_game_over() {
 		; // wait until a button has been pushed
 	}
 	
+}
+
+volatile uint8_t seven_seg_cc = 0;
+uint8_t seven_seg_digits[10] = {63, 6, 91, 79, 102, 109, 125, 7, 127, 111};
+
+void update_seven_segment(void) {
+	
+	seven_seg_cc = 1 ^ seven_seg_cc;
+	
+	if(seven_seg_cc == 0) {
+		PORTC = seven_seg_digits[get_cleared_rows() % 10];
+	} else {
+		PORTC = seven_seg_digits[(get_cleared_rows() / 10) % 10] | 0x80;
+	}
 }
