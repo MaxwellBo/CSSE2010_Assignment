@@ -134,6 +134,7 @@ void play_game(void) {
 	uint8_t characters_into_escape_sequence = 0;
 	uint8_t paused = 0;
 	uint32_t paused_time = 0;
+	DDRC = 0xFF;
 	
 	
 	// I'm putting all the features that need to get kicked off immediately here
