@@ -135,8 +135,8 @@ void play_game(void) {
 	uint8_t paused = 0;
 	uint32_t paused_time = 0;
 	DDRC = 0xFF;
-	DDRD = 0xFF;
-	
+	DDRD |= 0b10000000; // 7 to output
+	DDRD &= 0b10111111; // 6 to input
 	
 	// I'm putting all the features that need to get kicked off immediately here
 	move_cursor(3, 3);
