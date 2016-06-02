@@ -255,7 +255,6 @@ void print_block_preview(void) {
 		
 	for(uint8_t row=0; row < next_block.height; row++) {
 		move_cursor(15, 15 + row);
-		
 		switch(next_block.pattern[row]) {
 			case 0b001:
 				printf_P(PSTR("  \u2588\n"));
@@ -305,12 +304,37 @@ void terminal_update_column(uint8_t x, MatrixColumn col) {
 	}
 }
 
-void make_sound(uint8_t length, uint8_t us) {
-	for (uint8_t i = 0; i < length; i++) {
-		PORTD ^= 0b10000000; // Flip pin 7
-		PORTD ^= 0b10000000; // Flip pin 7
+// These are split across three separate functions
+// because _delay_ms must be known at compile time
+// and cannot be a function parameter
+
+void make_sound_high() {
+	for (uint8_t length=0; length < 18; length++) {
+		PORTD ^= 0b10000000;
+		_delay_us(500);
+		PORTD ^= 0b10000000;
+		_delay_us(6);
 	}
  }
+
+void make_sound_medium() {
+	for (uint8_t length=0; length < 6; length++) {
+		PORTD ^= 0b10000000;
+		_delay_us(1500);
+		PORTD ^= 0b10000000;
+		_delay_us(1500);
+	}
+}
+
+void make_sound_low() {
+	for (uint8_t length=0; length < 3; length++) {
+		PORTD ^= 0b10000000;
+		_delay_us(3000);
+		PORTD ^= 0b10000000;
+		_delay_us(3000);
+	}
+}
+ 
 
 //////////////////////////////////////////////////////////////////////////
 // Internal functions below
@@ -333,6 +357,9 @@ static void check_for_completed_rows(void) {
 				
 				// clear_terminal();
 				move_cursor(3, 3);
+				make_sound_low();
+				make_sound_medium();
+				make_sound_high();
 				printf_P(PSTR("Score: %6d"), get_score());
 				
 				// TODO: REMOVE
@@ -433,6 +460,7 @@ static uint8_t block_collides(FallingBlock block) {
 		// at the position where the block is located
 		if(bit_pattern_for_row & board[block.row + row]) {
 			// This row collides - we can stop now
+			make_sound_low();
 			return 1;
 		}
 	}

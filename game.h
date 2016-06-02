@@ -67,4 +67,6 @@ typedef uint8_t PixelColour;
 typedef PixelColour MatrixColumn[MATRIX_NUM_ROWS];
 void terminal_update_column(uint8_t x, MatrixColumn col);
 
-void make_sound(uint8_t length, uint8_t us);
+void make_sound_high();
+void make_sound_medium();
+void make_sound_low();
