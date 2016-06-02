@@ -87,9 +87,8 @@ void update_rows_on_display(uint8_t row_start, uint8_t num_rows) {
 	uint8_t row_end = row_start + num_rows - 1;
 	for(uint8_t row_num = row_start; row_num <= row_end; row_num++) {
 		ledmatrix_update_column(row_num, board_display[row_num]);
+		terminal_update_column(row_num, board_display[row_num]);
 	}
-	
-	print_game_view();
 }
 
 /*
@@ -377,36 +376,34 @@ void print_block_preview(void) {
 	}	
 }
 
-void print_game_view(void) {
-	for(uint8_t row=0; row < BOARD_ROWS; row++) {
-		for(uint8_t col=0; col < MATRIX_NUM_ROWS; col++) {
-			move_cursor(row, col);
-			
-			uint8_t pixel_color = board_display[row][col];
-			
-			uint8_t terminal_color = FG_RED;
-			
-			if (pixel_color == COLOUR_RED) {
+void terminal_update_column(uint8_t x, MatrixColumn col) {
+
+	// Repurposing ledmatrix_update_column
+	move_cursor(40, 8 + x);
+	for(uint8_t y = 0; y < MATRIX_NUM_ROWS; y++) {
+		uint8_t pixel_color = col[y];
+
+		if (pixel_color == COLOUR_BLACK) {
+			printf_P(PSTR(" "))
+		} else {
+  			uint8_t terminal_color = FG_RED;
+
+  			if (pixel_color == COLOUR_RED) {
 				terminal_color = FG_RED;
-			}
-			else if (pixel_color == COLOUR_GREEN) {
+			} else if (pixel_color == COLOUR_GREEN) {
 				terminal_color = FG_GREEN;
-			}
-			else if (pixel_color == COLOUR_YELLOW) {
+			} else if (pixel_color == COLOUR_YELLOW) {
 				terminal_color = FG_YELLOW;
-			}
-			else if (pixel_color == COLOUR_ORANGE) {
+			} else if (pixel_color == COLOUR_ORANGE) {
 				terminal_color = FG_BLUE;
-			}
-			else if (pixel_color == COLOUR_LIGHT_ORANGE) {
+			} else if (pixel_color == COLOUR_LIGHT_ORANGE) {
 				terminal_color = FG_CYAN;
 			}
-						
+
 			set_display_attribute(terminal_color);
 			reverse_video();
 			printf_P(PSTR(" "));
 			normal_display_mode();
-					
 		}
 	}
 }
