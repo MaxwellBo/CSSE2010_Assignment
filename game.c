@@ -244,6 +244,65 @@ uint8_t fix_block_to_board_and_add_new_block(void) {
 	return add_random_block();
 }
 
+void print_block_preview(void) {
+	
+	for(uint8_t offset=0; offset < 3; offset++) {
+		move_cursor(15, 15 + offset);
+		printf_P(PSTR("   "));
+	}
+		
+	for(uint8_t row=0; row < next_block.height; row++) {
+		move_cursor(15, 15 + row);
+		
+		switch(next_block.pattern[row]) {
+			case 0b001:
+				printf_P(PSTR("  \u2588\n"));
+				break;
+			case 0b010:
+				printf_P(PSTR(" \u2588 \n"));
+				break;
+			case 0b011:
+				printf_P(PSTR(" \u2588\u2588\n"));
+				break;
+			case 0b111:
+				printf_P(PSTR("\u2588\u2588\u2588\n"));
+				break;	
+		}
+	}	
+}
+
+void terminal_update_column(uint8_t x, MatrixColumn col) {
+
+	// Repurposing ledmatrix_update_column
+	move_cursor(40, 8 + x);
+	for(uint8_t y = 0; y < MATRIX_NUM_ROWS; y++) {
+		uint8_t pixel_color = col[y];
+
+		if (pixel_color == COLOUR_BLACK) {
+			printf_P(PSTR(" "))
+		} else {
+  			uint8_t terminal_color = FG_RED;
+
+  			if (pixel_color == COLOUR_RED) {
+				terminal_color = FG_RED;
+			} else if (pixel_color == COLOUR_GREEN) {
+				terminal_color = FG_GREEN;
+			} else if (pixel_color == COLOUR_YELLOW) {
+				terminal_color = FG_YELLOW;
+			} else if (pixel_color == COLOUR_ORANGE) {
+				terminal_color = FG_BLUE;
+			} else if (pixel_color == COLOUR_LIGHT_ORANGE) {
+				terminal_color = FG_CYAN;
+			}
+
+			set_display_attribute(terminal_color);
+			reverse_video();
+			printf_P(PSTR(" "));
+			normal_display_mode();
+		}
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Internal functions below
 //////////////////////////////////////////////////////////////////////////
@@ -349,64 +408,6 @@ static uint8_t add_random_block(void) {
 	return 1;
 }
 
-void print_block_preview(void) {
-	
-	for(uint8_t offset=0; offset < 3; offset++) {
-		move_cursor(15, 15 + offset);
-		printf_P(PSTR("   "));
-	}
-		
-	for(uint8_t row=0; row < next_block.height; row++) {
-		move_cursor(15, 15 + row);
-		
-		switch(next_block.pattern[row]) {
-			case 0b001:
-				printf_P(PSTR("  \u2588\n"));
-				break;
-			case 0b010:
-				printf_P(PSTR(" \u2588 \n"));
-				break;
-			case 0b011:
-				printf_P(PSTR(" \u2588\u2588\n"));
-				break;
-			case 0b111:
-				printf_P(PSTR("\u2588\u2588\u2588\n"));
-				break;	
-		}
-	}	
-}
-
-void terminal_update_column(uint8_t x, MatrixColumn col) {
-
-	// Repurposing ledmatrix_update_column
-	move_cursor(40, 8 + x);
-	for(uint8_t y = 0; y < MATRIX_NUM_ROWS; y++) {
-		uint8_t pixel_color = col[y];
-
-		if (pixel_color == COLOUR_BLACK) {
-			printf_P(PSTR(" "))
-		} else {
-  			uint8_t terminal_color = FG_RED;
-
-  			if (pixel_color == COLOUR_RED) {
-				terminal_color = FG_RED;
-			} else if (pixel_color == COLOUR_GREEN) {
-				terminal_color = FG_GREEN;
-			} else if (pixel_color == COLOUR_YELLOW) {
-				terminal_color = FG_YELLOW;
-			} else if (pixel_color == COLOUR_ORANGE) {
-				terminal_color = FG_BLUE;
-			} else if (pixel_color == COLOUR_LIGHT_ORANGE) {
-				terminal_color = FG_CYAN;
-			}
-
-			set_display_attribute(terminal_color);
-			reverse_video();
-			printf_P(PSTR(" "));
-			normal_display_mode();
-		}
-	}
-}
 
 /*
  * Check whether the given block collides (intersects with) with
