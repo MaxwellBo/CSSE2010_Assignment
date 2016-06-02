@@ -62,4 +62,4 @@ uint8_t fix_block_to_board_and_add_new_block(void);
 
 void print_block_preview(void);
 
-void ledmatrix_update_column(uint8_t x, MatrixColumn col);
+void terminal_update_column(uint8_t x, MatrixColumn col);
