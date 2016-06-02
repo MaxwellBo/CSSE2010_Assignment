@@ -279,7 +279,7 @@ void print_block_preview(void) {
 void terminal_update_column(uint8_t x, MatrixColumn col) {
 
 	// Repurposing ledmatrix_update_column
-	move_cursor(40, 8 + x);
+	move_cursor(30, 6 + x);
 	for(uint8_t y = 0; y < MATRIX_NUM_ROWS; y++) {
 		uint8_t pixel_color = col[y];
 

@@ -138,10 +138,12 @@ void play_game(void) {
 	DDRD |= 0b10000000; // 7 to output
 	DDRD &= 0b10111111; // 6 to input
 	
-	// I'm putting all the features that need to get kicked off immediately here
+	// I'm putting all the features that need to get kicked off immediately here and not wiped
+	// by new_game
 	move_cursor(3, 3);
 	printf_P(PSTR("Score: %6d"), get_score());
 	print_block_preview();
+	//draw_horizontal_line()
 	
 	// Record the last time a block was dropped as the current time -
 	// this ensures we don't drop a block immediately.
