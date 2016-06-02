@@ -33,6 +33,11 @@ void play_game(void);
 void handle_game_over(void);
 void handle_new_lap(void);
 void update_seven_segment(void);
+void convert_joystick(void);
+uint8_t is_left(void);
+uint8_t is_right(void);
+uint8_t is_up(void);
+uint8_t is_down(void);
 
 // ASCII code for Escape character
 #define ESCAPE_CHAR 27
@@ -67,6 +72,9 @@ void initialise_hardware(void) {
 	
 	// Turn on global interrupts
 	sei();
+	
+	ADMUX = (1<<REFS0);
+	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS2);
 }
 
 void splash_screen(void) {
@@ -134,6 +142,7 @@ void play_game(void) {
 	uint8_t characters_into_escape_sequence = 0;
 	uint8_t paused = 0;
 	uint32_t paused_time = 0;
+
 	DDRC = 0xFF;
 	DDRD |= 0b10000000; // 7 to output
 	DDRD &= 0b10111111; // 6 to input
@@ -166,6 +175,7 @@ void play_game(void) {
 		
 		// And everything that needs to be called in the main loop
 		update_seven_segment();
+		convert_joystick();
 
 		// Check for input - which could be a button push or serial input.
 		// Serial input may be part of an escape sequence, e.g. ESC [ D
@@ -211,16 +221,16 @@ void play_game(void) {
 		}
 		
 		// Process the input. 
-		if(button==3 || escape_sequence_char=='D') {
+		if(button==3 || escape_sequence_char=='D' || is_left()) {
 			// Attempt to move left
 			(void)attempt_move(MOVE_LEFT);
-		} else if(button==0 || escape_sequence_char=='C') {
+		} else if(button==0 || escape_sequence_char=='C' || is_right()) {
 			// Attempt to move right
 			(void)attempt_move(MOVE_RIGHT);
-		} else if (button==2 || escape_sequence_char == 'A') {
+		} else if (button==2 || escape_sequence_char == 'A' || is_up()) {
 			// Attempt to rotate
 			(void)attempt_rotation();
-		} else if (escape_sequence_char == 'B') {
+		} else if (escape_sequence_char == 'B' || is_down()) {
 			// Attempt to drop block
 			if(!attempt_drop_block_one_row()) {
 				// Drop failed - fix block to board and add new block
@@ -294,5 +304,75 @@ void update_seven_segment(void) {
 		PORTC = seven_seg_digits[get_cleared_rows() % 10];
 	} else {
 		PORTC = seven_seg_digits[(get_cleared_rows() / 10) % 10] | 0x80;
+	}
+}
+
+uint32_t cooldown_over = 0; // the next time the joystick works
+uint8_t target_pin = 0; // the pin we're converting
+uint16_t stick_x = 500; // Pin0
+uint16_t stick_y = 500; // Pin1
+
+void convert_joystick(void) {
+	
+	if (target_pin == 0) {
+		ADMUX = (1 << REFS0)|(0 << MUX0);
+	} 
+	else {
+		ADMUX = (1 << REFS0)|(1 << MUX0);
+	}
+	
+	ADCSRA |= (1<<ADSC);
+	
+	while (ADCSRA & (1 < ADSC)) {
+		; // repeat until converted
+	}
+	
+	if (target_pin == 0) {
+		stick_x = ADC;
+		target_pin = !target_pin; // do the other pin next time
+		}
+	else {
+		stick_y = ADC;
+		target_pin = !target_pin;
+	}
+}
+
+uint8_t is_left(void) {
+	if ((stick_x > 850) && (cooldown_over < get_clock_ticks())) {
+		cooldown_over = get_clock_ticks() + 150;
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+uint8_t is_right(void) {
+	if ((stick_x < 150) && (cooldown_over < get_clock_ticks())) {
+		cooldown_over = get_clock_ticks() + 150;
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+uint8_t is_up(void) {
+	if ((stick_y > 850) && (cooldown_over < get_clock_ticks())) {
+		cooldown_over = get_clock_ticks() + 300;
+		return 1;
+	} 
+	else {
+		return 0;
+	}
+}
+
+uint8_t is_down(void) {
+	if ((stick_y < 150) && (cooldown_over < get_clock_ticks())) {
+		cooldown_over = get_clock_ticks() + 150;
+		return 1;
+	} 
+	else {
+		return 0;
 	}
 }
