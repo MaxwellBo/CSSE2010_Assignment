@@ -62,6 +62,8 @@ uint8_t fix_block_to_board_and_add_new_block(void);
 
 void print_block_preview(void);
 
+void print_square(uint8_t pixel_color);
+
 #define MATRIX_NUM_ROWS 8
 typedef uint8_t PixelColour;
 typedef PixelColour MatrixColumn[MATRIX_NUM_ROWS];
