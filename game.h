@@ -62,4 +62,9 @@ uint8_t fix_block_to_board_and_add_new_block(void);
 
 void print_block_preview(void);
 
+#define MATRIX_NUM_ROWS 8
+typedef uint8_t PixelColour;
+typedef PixelColour MatrixColumn[MATRIX_NUM_ROWS];
 void terminal_update_column(uint8_t x, MatrixColumn col);
+
+void make_sound(uint8_t length, uint8_t us);

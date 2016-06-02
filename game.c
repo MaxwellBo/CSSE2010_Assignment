@@ -16,6 +16,8 @@
 #include "ledmatrix.h"
 #include "terminalio.h" // TODO: REMOVE
 #include <avr/pgmspace.h>
+#define F_CPU 8000000L
+#include <util/delay.h>
 #include <stdio.h>
 
 /*
@@ -279,7 +281,7 @@ void terminal_update_column(uint8_t x, MatrixColumn col) {
 		uint8_t pixel_color = col[y];
 
 		if (pixel_color == COLOUR_BLACK) {
-			printf_P(PSTR(" "))
+			printf_P(PSTR(" "));
 		} else {
   			uint8_t terminal_color = FG_RED;
 
@@ -306,9 +308,7 @@ void terminal_update_column(uint8_t x, MatrixColumn col) {
 void make_sound(uint8_t length, uint8_t us) {
 	for (uint8_t i = 0; i < length; i++) {
 		PORTD ^= 0b10000000; // Flip pin 7
-		_delay_us(us);
 		PORTD ^= 0b10000000; // Flip pin 7
-		_delay_us(us);
 	}
  }
 
