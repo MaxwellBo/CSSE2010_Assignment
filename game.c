@@ -279,7 +279,7 @@ void print_block_preview(void) {
 void terminal_update_column(uint8_t x, MatrixColumn col) {
 
 	// Repurposing ledmatrix_update_column
-	move_cursor(30, 6 + x);
+	move_cursor(30, 5 + x);
 	for(uint8_t y = 0; y < MATRIX_NUM_ROWS; y++) {
 		uint8_t pixel_color = col[y];
 
@@ -367,10 +367,6 @@ static void check_for_completed_rows(void) {
 				
 				// clear_terminal();
 				move_cursor(3, 3);
-				make_sound_low();
-				make_sound_medium();
-				make_sound_high();
-				make_sound_medium();
 				printf_P(PSTR("Score: %6d"), get_score());
 				
 				// TODO: REMOVE
@@ -391,6 +387,11 @@ static void check_for_completed_rows(void) {
 				for(uint8_t j=0; j < MATRIX_NUM_ROWS; j++) {
 					board_display[0][j] = 0;
 				}
+				
+				make_sound_low();
+				make_sound_medium();
+				make_sound_high();
+				make_sound_medium();
 				
 				update_rows_on_display(0, BOARD_ROWS);
 	

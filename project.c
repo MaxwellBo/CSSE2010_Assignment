@@ -142,8 +142,18 @@ void play_game(void) {
 	// by new_game
 	move_cursor(3, 3);
 	printf_P(PSTR("Score: %6d"), get_score());
+	move_cursor(3, 6);
+	printf_P(PSTR("Cleared rows: %6d"), get_cleared_rows());
 	print_block_preview();
-	//draw_horizontal_line()
+	
+	
+	// y, startx, endx
+	draw_horizontal_line(4, 30, 30 + BOARD_WIDTH - 1);
+	draw_horizontal_line(4 + BOARD_ROWS + 1, 30, 30 + BOARD_WIDTH - 1);
+	
+	// x, starty, endy
+	draw_vertical_line(30 - 1, 4, 4 + BOARD_ROWS + 1);
+	draw_vertical_line(30 + BOARD_WIDTH, 4, 4 + BOARD_ROWS + 1);
 	
 	// Record the last time a block was dropped as the current time -
 	// this ensures we don't drop a block immediately.
