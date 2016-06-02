@@ -220,6 +220,7 @@ uint8_t attempt_rotation(void) {
 	update_rows_on_display(current_block.row, rows_affected);
 	
 	make_sound_high();
+	make_sound_medium();
 	// Rotation has happened - return true
 	return 1;
 }
@@ -313,7 +314,7 @@ void terminal_update_column(uint8_t x, MatrixColumn col) {
 
 void make_sound_high() {
 	if (PIND & 0b01000000) { // Pin 6 for the mute button
-		for (uint8_t length=0; length < 18; length++) {
+		for (uint8_t length=0; length < 36; length++) {
 			PORTD ^= 0b10000000;
 			_delay_us(500);
 			PORTD ^= 0b10000000;
@@ -324,7 +325,7 @@ void make_sound_high() {
 
 void make_sound_medium() {
 	if (PIND & 0b01000000) { // Pin 6 for the mute button
-		for (uint8_t length=0; length < 6; length++) {
+		for (uint8_t length=0; length < 12; length++) {
 			PORTD ^= 0b10000000;
 			_delay_us(1500);
 			PORTD ^= 0b10000000;
@@ -335,7 +336,7 @@ void make_sound_medium() {
 
 void make_sound_low() {
 	if (PIND & 0b01000000) { // Pin 6 for the mute button
-		for (uint8_t length=0; length < 2; length++) {
+		for (uint8_t length=0; length < 6; length++) {
 			PORTD ^= 0b10000000;
 			_delay_us(3000);
 			PORTD ^= 0b10000000;
