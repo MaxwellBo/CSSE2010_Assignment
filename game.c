@@ -219,6 +219,7 @@ uint8_t attempt_rotation(void) {
 
 	update_rows_on_display(current_block.row, rows_affected);
 	
+	make_sound_high();
 	// Rotation has happened - return true
 	return 1;
 }
@@ -242,6 +243,8 @@ uint8_t fix_block_to_board_and_add_new_block(void) {
 		board[board_row] |= 
 				(current_block.pattern[row]	<< current_block.column);
 	}
+	make_sound_low();
+	make_sound_low();
 	check_for_completed_rows();
 	return add_random_block();
 }
@@ -327,7 +330,7 @@ void make_sound_medium() {
 }
 
 void make_sound_low() {
-	for (uint8_t length=0; length < 3; length++) {
+	for (uint8_t length=0; length < 2; length++) {
 		PORTD ^= 0b10000000;
 		_delay_us(3000);
 		PORTD ^= 0b10000000;
@@ -360,6 +363,7 @@ static void check_for_completed_rows(void) {
 				make_sound_low();
 				make_sound_medium();
 				make_sound_high();
+				make_sound_medium();
 				printf_P(PSTR("Score: %6d"), get_score());
 				
 				// TODO: REMOVE
@@ -460,7 +464,6 @@ static uint8_t block_collides(FallingBlock block) {
 		// at the position where the block is located
 		if(bit_pattern_for_row & board[block.row + row]) {
 			// This row collides - we can stop now
-			make_sound_low();
 			return 1;
 		}
 	}
