@@ -303,6 +303,15 @@ void terminal_update_column(uint8_t x, MatrixColumn col) {
 	}
 }
 
+void make_sound(uint8_t length, uint8_t us) {
+	for (uint8_t i = 0; i < length; i++) {
+		PORTD ^= 0b10000000; // Flip pin 7
+		_delay_us(us);
+		PORTD ^= 0b10000000; // Flip pin 7
+		_delay_us(us);
+	}
+ }
+
 //////////////////////////////////////////////////////////////////////////
 // Internal functions below
 //////////////////////////////////////////////////////////////////////////
