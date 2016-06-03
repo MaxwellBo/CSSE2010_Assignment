@@ -307,7 +307,7 @@ void update_seven_segment(void) {
 	}
 }
 
-uint32_t cooldown_over = 0; // the next time the joystick works
+uint32_t joystick_time = 0;
 uint8_t target_pin = 0; // the pin we're converting
 uint16_t stick_x = 500; // Pin0
 uint16_t stick_y = 500; // Pin1
@@ -315,10 +315,10 @@ uint16_t stick_y = 500; // Pin1
 void convert_joystick(void) {
 	
 	if (target_pin == 0) {
-		ADMUX = (1 << REFS0)|(0 << MUX0);
+		ADMUX = (1 << REFS0) | (0 << MUX0);
 	} 
 	else {
-		ADMUX = (1 << REFS0)|(1 << MUX0);
+		ADMUX = (1 << REFS0) | (1 << MUX0);
 	}
 	
 	ADCSRA |= (1<<ADSC);
@@ -329,17 +329,17 @@ void convert_joystick(void) {
 	
 	if (target_pin == 0) {
 		stick_x = ADC;
-		target_pin = !target_pin; // do the other pin next time
-		}
+	}
 	else {
 		stick_y = ADC;
-		target_pin = !target_pin;
 	}
+
+	target_pin = !target_pin; // do the other pin next time
 }
 
-uint8_t is_left(void) {
-	if ((stick_x > 850) && (cooldown_over < get_clock_ticks())) {
-		cooldown_over = get_clock_ticks() + 150;
+uint8_t is_left(void) { // time is at least 150 ticks later than the last joystick input
+	if ((stick_x > 850) && (get_clock_ticks() > joystick_time + 150)) {
+		joystick_time = get_clock_ticks(); 
 		return 1;
 	}
 	else {
@@ -348,7 +348,8 @@ uint8_t is_left(void) {
 }
 
 uint8_t is_right(void) {
-	if ((stick_x < 150) && (cooldown_over < get_clock_ticks())) {
+	if ((stick_x < 150) && (get_clock_ticks() > joystick_time + 150)) {
+		joystick_time = get_clock_ticks(); 
 		cooldown_over = get_clock_ticks() + 150;
 		return 1;
 	}
@@ -357,9 +358,9 @@ uint8_t is_right(void) {
 	}
 }
 
-uint8_t is_up(void) {
-	if ((stick_y > 850) && (cooldown_over < get_clock_ticks())) {
-		cooldown_over = get_clock_ticks() + 300;
+uint8_t is_up(void) { 
+	if ((stick_y > 850) && (get_clock_ticks() > joystick_time + 300)) {
+		joystick_time = get_clock_ticks(); 
 		return 1;
 	} 
 	else {
@@ -367,9 +368,9 @@ uint8_t is_up(void) {
 	}
 }
 
-uint8_t is_down(void) {
-	if ((stick_y < 150) && (cooldown_over < get_clock_ticks())) {
-		cooldown_over = get_clock_ticks() + 150;
+uint8_t is_down(void) { 
+	if ((stick_y < 150) && (get_clock_ticks() > joystick_time + 150)) {
+		joystick_time = get_clock_ticks(); 
 		return 1;
 	} 
 	else {
