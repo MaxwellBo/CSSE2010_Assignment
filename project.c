@@ -349,8 +349,7 @@ uint8_t is_left(void) { // time is at least 150 ticks later than the last joysti
 
 uint8_t is_right(void) {
 	if ((stick_x < 150) && (get_clock_ticks() > joystick_time + 150)) {
-		joystick_time = get_clock_ticks(); 
-		cooldown_over = get_clock_ticks() + 150;
+		joystick_time = get_clock_ticks();
 		return 1;
 	}
 	else {
