@@ -221,16 +221,16 @@ void play_game(void) {
 		}
 		
 		// Process the input. 
-		if(button==3 || escape_sequence_char=='D' || is_left()) {
+		if((button==3 || escape_sequence_char=='D' || is_left()) && !paused) {
 			// Attempt to move left
 			(void)attempt_move(MOVE_LEFT);
-		} else if(button==0 || escape_sequence_char=='C' || is_right()) {
+		} else if((button==0 || escape_sequence_char=='C' || is_right()) && !paused) {
 			// Attempt to move right
 			(void)attempt_move(MOVE_RIGHT);
-		} else if (button==2 || escape_sequence_char == 'A' || is_up()) {
+		} else if ((button==2 || escape_sequence_char == 'A' || is_up()) && !paused) {
 			// Attempt to rotate
 			(void)attempt_rotation();
-		} else if (escape_sequence_char == 'B' || is_down()) {
+		} else if ((escape_sequence_char == 'B' || is_down()) && !paused)  {
 			// Attempt to drop block
 			if(!attempt_drop_block_one_row()) {
 				// Drop failed - fix block to board and add new block
@@ -239,7 +239,7 @@ void play_game(void) {
 				}
 			} 
 			last_drop_time = get_clock_ticks();
-		} else if (button==1 || serial_input == ' ') {
+		} else if ((button==1 || serial_input == ' ') && !paused) {
 			// Attempt to drop block from height
 			
 			// Attempt until failure
